@@ -35,3 +35,63 @@ WHERE Genre IN ('Sports', 'Racing')
 AND Publisher = 'Nintendo'
 ORDER BY Name;
 
+--Obtenha os video games que não possuem pontuação de críticos 
+--(Critic_Score IS NULL), exibindo nome, plataforma e publisher
+SELECT Name, Platform, Publisher FROM games_data
+WHERE Critic_Score IS NULL;
+
+--Liste os video games cuja venda global seja maior que 20 milhões, 
+--mas cuja venda no Japão seja menor que 5 milhões.
+SELECT Name FROM games_data
+WHERE Global_Sales > 20 
+AND JP_Sales < 5
+ORDER BY Global_Sales DESC;
+
+--Mostre os video games lançados entre 1995 e 2005, excluindo os do gênero 
+--Role-Playing, ordenados pela Global_Sales de forma decrescente.
+SELECT Name FROM games_data
+WHERE Year_of_Release BETWEEN 1995 AND 2005
+AND Genre NOT LIKE 'Role-Playing'
+ORDER BY Global_Sales DESC;
+
+--Obtenha os video games onde as vendas na Europa 
+--sejam maiores que as vendas na América do Norte.
+SELECT Name FROM games_data
+WHERE EU_Sales > NA_Sales;
+
+--Mostre os video games cuja Global_Sales seja maior que a média de 
+--Global_Sales do dataset
+SELECT Name FROM games_data
+WHERE Global_Sales > (SELECT AVG(Global_Sales) FROM games_data);
+
+--Liste os video games cuja Critic_Score seja maior que o Critic_Score do 
+--jogo “Wii Sports”
+SELECT Name FROM games_data
+WHERE Critic_Score > (SELECT MAX(Critic_Score) FROM games_data
+WHERE Name = 'Wii Sports');
+
+--Encontre os video games cujo User_Count seja maior que a média de User_Count,
+--mas que tenham Critic_Score menor que 80.
+SELECT Name FROM games_data
+WHERE User_count > (SELECT AVG(User_count) FROM games_data)
+AND Critic_Score < 80;
+
+--Mostre os 10 video games com maior venda global, mas ignore os 
+--primeiros 5 resultados.
+SELECT Name FROM games_data
+ORDER BY Global_Sales DESC
+LIMIT 10 OFFSET 5;
+
+--Liste os video games com Rating diferente de 'E', que tenham User_Score não
+--nulo, ordenados por User_Score de forma decrescente, exibindo apenas os primeiros 7.
+SELECT Name FROM games_data
+WHERE Rating != 'E'
+AND User_Score IS NOT NULL
+ORDER BY User_Score DESC
+LIMIT 7;
+
+
+--Encontre os video games cuja venda global seja maior que a soma das
+--vendas na América do Norte e na Europa.
+SELECT Name, Global_Sales, NA_Sales, EU_Sales FROM games_data
+WHERE Global_Sales > (NA_Sales + EU_Sales);
