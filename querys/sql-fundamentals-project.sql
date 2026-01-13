@@ -67,7 +67,7 @@ WHERE Global_Sales > (SELECT AVG(Global_Sales) FROM games_data);
 --Liste os video games cuja Critic_Score seja maior que o Critic_Score do 
 --jogo “Wii Sports”
 SELECT Name FROM games_data
-WHERE Critic_Score > (SELECT MAX(Critic_Score) FROM games_data
+WHERE Critic_Score > (SELECT MAX(Critic_Score) FROM games_data --Se faz uso do MAX pra garantir que retorne um único valor
 WHERE Name = 'Wii Sports');
 
 --Encontre os video games cujo User_Count seja maior que a média de User_Count,
@@ -94,4 +94,5 @@ LIMIT 7;
 --Encontre os video games cuja venda global seja maior que a soma das
 --vendas na América do Norte e na Europa.
 SELECT Name, Global_Sales, NA_Sales, EU_Sales FROM games_data
-WHERE Global_Sales > (NA_Sales + EU_Sales);
+WHERE Global_Sales > (NA_Sales + EU_Sales); --E importante usar parênteses
+--pra separar a soma antes da comparação.
